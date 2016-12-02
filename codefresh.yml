@@ -1,0 +1,20 @@
+version: '1.0'
+
+steps:
+
+  git_clone_private_repo:
+      image: codefreshio/git-image:latest
+      working_directory: ${{main_clone}}
+      commands:
+        - bash -c 'rm -rf /codefresh/volume/${{REPO_NAME}}/'
+        - git clone https://${{USERNAME}}:${{PASSWORD}}@github.com/**/**.git /codefresh/volume/${{REPO_NAME}}
+        - bash -c 'cd /codefresh/volume/${{REPO_NAME}}/ && git checkout ${{BRANCH_NAME}} && git branch && git status'
+        - ls -l /codefresh/volume/${{REPO_NAME}}
+
+  build_private_prj:
+    type: build
+    description: Build an Image from a Different Git Repository
+    working_directory: "/codefresh/volume/${{REPO_NAME}}"
+    image_name: codefreshio/yaml-example-dif-git-repo
+    dockerfile: Dockerfile
+    tag: ${{CF_BRANCH}}
