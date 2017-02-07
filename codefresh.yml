@@ -1,7 +1,5 @@
 version: '1.0'
-
 steps:
-
   git_clone_private_repo:
       image: codefreshio/git-image:latest
       working_directory: ${{main_clone}}
